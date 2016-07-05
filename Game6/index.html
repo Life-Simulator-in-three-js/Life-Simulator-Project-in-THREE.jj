@@ -1,8 +1,8 @@
 <html>
 <head>
 <title>Three.js Test</title>
-<script src='C:\Users\block\Downloads\three.js-master\three.js-master\build\three.min.js'></script>
-<script src="C:\Users\block\Downloads\three.js-master\three.js-master\examples\js\controls\TrackballControls.js"></script>
+<script src='three.min.js'></script>
+<script src="TrackballControls.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -13,33 +13,90 @@ render();
 animate();
 
 function init(){
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000000);
-  camera.position.z = -1000;
 
- // controls = new THREE.TrackballControls( camera );
-  //controls.addEventListener('change', render);
+  var g1 = new THREE.CubeGeometry(100, 300, 100);
+    var m1 = new THREE.MeshBasicMaterial({ color: 'sandybrown' });
+cube1 = new THREE.Mesh(g1, m1);
+
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000000);
+  camera.position.z = cube1.position.z + 900;
+  camera.position.x = cube1.position.x + 50;
+  camera.position.y = cube1.position.y + 350;
+  camera.rotation.x = -.45;
+
+//controls = new THREE.TrackballControls( camera );
+//controls.addEventListener('change', render);
 
   scene = new THREE.Scene();
 
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor('black');
+  renderer.setClearColor('lightblue');
   document.body.appendChild(renderer.domElement);
 
-  var g1 = new THREE.CubeGeometry(200, 300, 200);
-  var g2 = new THREE.CubeGeometry(50, 200, 100);
-  var g4 = new THREE.CubeGeometry(50, 200, 100);
-  var m1 = new THREE.MeshNormalMaterial();
+  var g1 = new THREE.CubeGeometry(100, 300, 100);
+  var g2 = new THREE.CubeGeometry(50, 200, 50);
+  var g4 = new THREE.CubeGeometry(50, 200, 50);
+  var g5 = new THREE.CubeGeometry(55, 150, 55);
+  var g6 = new THREE.CubeGeometry(55, 150, 55);
+  var g7 = new THREE.CubeGeometry(205, 235, 205);
+  var m1 = new THREE.MeshBasicMaterial({ color: 'sandybrown' });
+  var m2 = new THREE.MeshBasicMaterial({ color: 'darkblue' });
+  var m3 = new THREE.MeshBasicMaterial({ color: 'darkgreen' })
+
   cube1 = new THREE.Mesh(g1, m1);
+  cube1.position.y = cube1.position.y + 10 
   cube2 = new THREE.Mesh(g2, m1);
   cube3 = new THREE.Mesh(g2, m1);
   cube4 = new THREE.Mesh(g4, m1);
   cube5 = new THREE.Mesh(g4, m1);
+  cube6 = new THREE.Mesh(g5, m2);
+  cube7 = new THREE.Mesh(g5, m2);
+  cube8 = new THREE.Mesh(g6, m3);
+  cube9 = new THREE.Mesh(g6, m3);
+  cube10  = new THREE.Mesh(g7, m3);
   cube2.rotation.z = .65;
   cube3.rotation.z = -.65;
-  scene.add(cube1, cube2, cube3, cube4, cube5);
+  cube8.rotation.z = .65;
+  cube9.rotation.z = -.65;
+  scene.add(cube1, cube2, cube3, cube4, cube5, cube6, cube7, cube8, cube9, cube10);
+
+  floorg = new THREE.CubeGeometry(10000, 50, 10000)
+  floorm = new THREE.MeshBasicMaterial({ color: 'lightgray' })
+  floor = new THREE.Mesh(floorg, floorm);
+  floor.position.y = cube1.position.y - 270;
+  scene.add(floor)
+
+  var g8 = new THREE.CubeGeometry(300, 50, 300);
+  var g9 = new THREE.CubeGeometry(50, 150, 50);
+  var m4 = new THREE.MeshBasicMaterial({ color: 'saddlebrown' });
+
+  tableTop = new THREE.Mesh(g8, m4);
+  tableLeg1 = new THREE.Mesh(g9, m4);
+  tableLeg2 = new THREE.Mesh(g9, m4);
+  tableLeg3 = new THREE.Mesh(g9, m4);
+  tableLeg4 = new THREE.Mesh(g9, m4);
+
+  tableTop.position.x = tableTop.position.x + 400;
+  tableLeg1.position.x = tableLeg1.position.x + 280; 
+  tableLeg1.position.z = tableLeg1.position.z - 50;
+  tableLeg1.position.y = tableLeg1.position.y - 50;
+  tableLeg2.position.x = tableLeg1.position.x + 245; 
+  tableLeg2.position.z = tableLeg2.position.z - 50;
+  tableLeg2.position.y = tableLeg2.position.y - 50;
+  tableLeg3.position.x = tableLeg3.position.x + 280; 
+  tableLeg3.position.z = tableLeg3.position.z + 100;
+  tableLeg3.position.y = tableLeg3.position.y - 50;
+  tableLeg4.position.x = tableLeg3.position.x + 245; 
+  tableLeg4.position.z = tableLeg4.position.z + 100;
+  tableLeg4.position.y = tableLeg4.position.y - 50;
+  scene.add(tableTop, tableLeg1, tableLeg2, tableLeg3, tableLeg4)
 
   document.addEventListener('keydown', Keyboard, false);
+
+  var light1 = new THREE.DirectionalLight('white', 1);
+light1.position.set(0, -400, 400).normalize();
+scene.add(light1)
 }
 
 function Keyboard(){
@@ -47,22 +104,35 @@ function Keyboard(){
 
 	if(event.keyCode == 38){cube1.position.z+=speed}
 	if(event.keyCode == 40){cube1.position.z-=speed}
-	if(event.keyCode == 37){cube1.position.x+=speed}
-	if(event.keyCode == 39){cube1.position.x-=speed}
+	if(event.keyCode == 37){cube1.position.x-=speed}
+	if(event.keyCode == 39){cube1.position.x+=speed}
 	if(event.keyCode == 32){cube1.position.y+=speed}
-	if(event.keyCode == 16){cube1.position.y-=speed}			
+	if(event.keyCode == 16){cube1.position.y-=speed}
+  if(event.keyCode == 188){camera.rotation.y+=.01}	
+  if(event.keyCode == 190){camera.rotation.y-=.01}
+  if(event.keyCode == 187){camera.position.z-=100}  
+  if(event.keyCode == 189){camera.position.z+=100}
+  if(event.keyCode == 79){camera.rotation.x+=.005;}  
+  if(event.keyCode == 76){camera.rotation.x-=.005;}
+  if(event.keyCode == 87){camera.position.z-=5}  
+  if(event.keyCode == 83){camera.position.z+=5}
+  if(event.keyCode == 65){camera.position.x-=5}  
+  if(event.keyCode == 68){camera.position.x+=5}
+  if(event.keyCode == 107){camera.position.y-=5}  
+  if(event.keyCode == 109){camera.position.y+=5}
 }  
 
 function render(){
+
      var c3x = cube1.position.x - 100;
-     var c3y = cube1.position.y;
+     var c3y = cube1.position.y- 28;
      var c3z = cube1.position.z;
   cube3.position.x = c3x;
   cube3.position.y = c3y;
   cube3.position.z = c3z;
 
       var c2x = cube1.position.x + 100;
-      var c2y = cube1.position.y;
+      var c2y = cube1.position.y- 28;
       var c2z = cube1.position.z;
   cube2.position.x = c2x;
    cube2.position.y = c2y;
@@ -82,13 +152,47 @@ var c5z = cube1.position.z;
     cube5.position.y = c5y;
     cube5.position.z = c5z;    
 
+    var c6x = cube1.position.x + 50;
+var c6y = cube1.position.y - 150;
+var c6z = cube1.position.z;
+    cube6.position.x = c6x;
+    cube6.position.y = c6y;
+    cube6.position.z = c6z;
+
+var c7x = cube1.position.x - 50;
+var c7y = cube1.position.y - 150;
+var c7z = cube1.position.z;
+    cube7.position.x = c7x;
+    cube7.position.y = c7y;
+    cube7.position.z = c7z;
+
+          var c8x = cube1.position.x + 100;
+      var c8y = cube1.position.y - 28;
+      var c8z = cube1.position.z;
+  cube8.position.x = c8x;
+   cube8.position.y = c8y;
+    cube8.position.z = c8z;
+
+         var c9x = cube1.position.x - 100;
+     var c9y = cube1.position.y - 28;
+     var c9z = cube1.position.z;
+  cube9.position.x = c9x;
+  cube9.position.y = c9y;
+  cube9.position.z = c9z;
+
+           var c10x = cube1.position.x;
+     var c10y = cube1.position.y - 50;
+     var c10z = cube1.position.z;
+  cube10.position.x = c10x;
+  cube10.position.y = c10y;
+  cube10.position.z = c10z;
 
 renderer.render( scene, camera );
 }
 
 function animate(){
   requestAnimationFrame( animate );
-  controls.update();
+  // controls.update();
   render();
 }
 </script>
