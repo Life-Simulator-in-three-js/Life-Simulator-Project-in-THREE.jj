@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>Three.js Test</title>
+<script src='C:\Users\block\Downloads\three.js-master\three.js-master\build\three.min.js'></script>
+<script src="C:\Users\block\Downloads\three.js-master\three.js-master\examples\js\controls\TrackballControls.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+var camera, controls, scene, renderer, cube1;
+
+init();
+render();
+animate();
+
+function init(){
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000000);
+  camera.position.z = -1000;
+
+ // controls = new THREE.TrackballControls( camera );
+  //controls.addEventListener('change', render);
+
+  scene = new THREE.Scene();
+
+  renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor('black');
+  document.body.appendChild(renderer.domElement);
+
+  var g1 = new THREE.CubeGeometry(200, 300, 200);
+  var g2 = new THREE.CubeGeometry(50, 200, 100);
+  var g4 = new THREE.CubeGeometry(50, 200, 100);
+  var m1 = new THREE.MeshNormalMaterial();
+  cube1 = new THREE.Mesh(g1, m1);
+  cube2 = new THREE.Mesh(g2, m1);
+  cube3 = new THREE.Mesh(g2, m1);
+  cube4 = new THREE.Mesh(g4, m1);
+  cube5 = new THREE.Mesh(g4, m1);
+  cube2.rotation.z = .65;
+  cube3.rotation.z = -.65;
+  scene.add(cube1, cube2, cube3, cube4, cube5);
+
+  document.addEventListener('keydown', Keyboard, false);
+}
+
+function Keyboard(){
+	var speed = 2;
+
+	if(event.keyCode == 38){cube1.position.z+=speed}
+	if(event.keyCode == 40){cube1.position.z-=speed}
+	if(event.keyCode == 37){cube1.position.x+=speed}
+	if(event.keyCode == 39){cube1.position.x-=speed}
+	if(event.keyCode == 32){cube1.position.y+=speed}
+	if(event.keyCode == 16){cube1.position.y-=speed}			
+}  
+
+function render(){
+     var c3x = cube1.position.x - 100;
+     var c3y = cube1.position.y;
+     var c3z = cube1.position.z;
+  cube3.position.x = c3x;
+  cube3.position.y = c3y;
+  cube3.position.z = c3z;
+
+      var c2x = cube1.position.x + 100;
+      var c2y = cube1.position.y;
+      var c2z = cube1.position.z;
+  cube2.position.x = c2x;
+   cube2.position.y = c2y;
+    cube2.position.z = c2z;
+
+var c4x = cube1.position.x - 50;
+var c4y = cube1.position.y - 150;
+var c4z = cube1.position.z;
+    cube4.position.x = c4x;
+    cube4.position.y = c4y;
+    cube4.position.z = c4z;
+
+var c5x = cube1.position.x + 50;
+var c5y = cube1.position.y - 150;
+var c5z = cube1.position.z;
+    cube5.position.x = c5x;
+    cube5.position.y = c5y;
+    cube5.position.z = c5z;    
+
+
+renderer.render( scene, camera );
+}
+
+function animate(){
+  requestAnimationFrame( animate );
+  controls.update();
+  render();
+}
+</script>
+</body>
+</html>
